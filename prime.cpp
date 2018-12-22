@@ -1,0 +1,8 @@
+bool prime(ll num)
+{
+  
+
+
+
+
+}
