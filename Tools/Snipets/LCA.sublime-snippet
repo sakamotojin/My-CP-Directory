@@ -1,0 +1,48 @@
+<snippet>
+	<content><![CDATA[
+ll res;
+ll a[N];
+ll n ;
+ll timer;
+ll height[N];
+ll up[N][LOG];
+ll in[N], out[N];
+ 
+vector<ll> v[N];
+ 
+void Dfs(ll node, ll Par, ll h){
+    height[node] = h;
+    in[node] = ++timer;
+    up[node][0] = Par;
+    for(int i = 1; i < LOG; ++i){
+        up[node][i] = up[up[node][i - 1]][i - 1]; 
+    }
+    for(auto i: v[node]){
+        if(i != Par) Dfs(i, node, h + 1);
+    }
+    out[node] = ++timer;
+}
+ 
+bool isAncest(ll u, ll v){ //pahla wala ancestor h dusre wale ka??
+    return in[u] <= in[v] && out[v] <= out[u];
+}
+ 
+ll LCA(ll u, ll v){
+    if(isAncest(u, v))  return u;
+    if(isAncest(v, u))  return v;
+    for(int i = LOG - 1; i >= 0; --i){
+        if(!isAncest(up[u][i], v))  u = up[u][i];
+    }
+    return up[u][0];
+}
+ 
+ll dist(ll u, ll v){
+    ll node = LCA(u, v);
+    return height[u] + height[v] - 2 * height[node];
+}
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>LCA</tabTrigger> 
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>
